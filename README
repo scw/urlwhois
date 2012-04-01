@@ -1,1 +1,5 @@
 Look up WHOIS information for any URL -- no need to parse out the domain name beforehand. I got annoyed constantly having to manually extract the relevant components of a URL to perform a WHOIS, this script does it for you.
+
+Give it a whirl:
+
+  ./urlwhois http://www.google.co.uk/ig
