@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # Extract WHOIS information from a fully formed URL
 
+import os
+import pickle
 import subprocess
 import sys
 import urllib
@@ -9,8 +11,23 @@ from urlparse import urlparse
 class TopLevelDomains(object):
     def __init__(self):
         self.url = 'https://mxr.mozilla.org/mozilla/source/netwerk/dns/src/effective_tld_names.dat?raw=1'
-        self.resource = urllib.urlopen(self.url)
-        self.tlds = [line.strip() for line in self.resource.readlines() if line[0] not in "/\n"]
+        self.tlds = self.tlds()
+
+    def tlds(self):
+        path = 'tlds.dat'
+        if os.path.exists(path):
+            try:
+                data_handle = open(path, 'rb')
+                tlds = pickle.load(data_handle)
+            except:
+                print "Unable to load TLD pickle."
+                sys.exit(1)
+        else:
+            resource = urllib.urlopen(self.url)
+            tlds = [line.strip() for line in resource.readlines() if line[0] not in "/\n"]
+            pickle.dump(tlds, open(path, 'wb'))
+
+        return tlds
 
 # from http://stackoverflow.com/questions/1066933/1069780#1069780
 def getDomain(url, tlds):
