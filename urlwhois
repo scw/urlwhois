@@ -14,7 +14,7 @@ class TopLevelDomains(object):
         self.tlds = self.tlds()
 
     def tlds(self):
-        path = 'tlds.dat'
+        path = os.path.expanduser('~/.tlds.dat')
         if os.path.exists(path):
             try:
                 data_handle = open(path, 'rb')
